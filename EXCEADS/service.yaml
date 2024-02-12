@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: exceads-service
+  namespace: biocomplexity
+spec:
+  selector:
+    app: exceads
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: http-exceads
