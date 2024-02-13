@@ -4,16 +4,16 @@ metadata:
   name: exceads-dev-deployment
   namespace: biocomplexity
   labels:
-    app: exceads
+    app: exceads-dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: exceads
+      app: exceads-dev
   template:
     metadata:
       labels:
-        app: exceads
+        app: exceads-dev
     spec:
       volumes:
       # - name: exceads-dev-nfs-volume
