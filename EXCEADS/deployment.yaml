@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exceads-deployment
+  name: exceads-dev-deployment
   namespace: biocomplexity
   labels:
     app: exceads
@@ -16,20 +16,20 @@ spec:
         app: exceads
     spec:
       volumes:
-      # - name: exceads-nfs-volume
+      # - name: exceads-dev-nfs-volume
       #   persistentVolumeClaim:
-      #     claimName: exceads-nfs-pvc
+      #     claimName: exceads-dev-nfs-pvc
         - name: exceads-secrets
           secret:
-            secretName: exceads-secrets
+            secretName: exceads-dev-secrets
         - name: exceads-db-secrets
           secret:
-            secretName: exceads-db-secrets
+            secretName: exceads-dev-db-secrets
         
       imagePullSecrets:
         - name: exceads-registry-secret
       containers:
-      - name: exceads-frontend
+      - name: exceads-dev-frontend
         image: ghcr.io/nssac/exceads-dev:latest
         imagePullPolicy: Always
         ports:
@@ -40,6 +40,8 @@ spec:
               value: /run/exceads-db-secrets/db_root_password
             - name: EXCEADS_DB_CONNECTION
               value: localhost:3306/exceads
+            - name: EXCEADS_TEMPLATES_GIT_URL
+              value: https://github.com/NSSAC/EXCEADS-Templates.git
             - name: EXCEADS_GIT_TOKEN_FILE
               value: /run/exceads-secrets/git_token
             - name: EXCEADS_INSTANCE_NAME
@@ -50,11 +52,6 @@ spec:
               value: out.mail.virginia.edu
             - name: EXCEADS_SMTP_TO
               value: pjp2b@virginia.edu
-        # # 3. Inject secrets as ENV variables, from the secrets.yaml spec. (Secrets can also be injected as files in the tree)
-        # envFrom:
-        # - secretRef: 
-        #     name: MYSECRETS
-        # All UVARC deployments require a resource spec:
         resources:
           requests:
             memory: "2048Mi"
@@ -98,8 +95,3 @@ spec:
         - name: exceads-db-secrets
           readOnly: true
           mountPath: "/run/exceads-db-secrets"
-
-#
-# Deployment file is the basic definition of the pod. It defines the container to run,
-# the number of replicas, any ENV variables, VOLS to be mounted, SECRETS, etc.
-#

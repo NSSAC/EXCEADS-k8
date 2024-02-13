@@ -4,18 +4,18 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.org/websocket-services: "exceads-service"
-  name: exceads-nginx-ingress
+    nginx.org/websocket-services: "exceads-dev-service"
+  name: exceads-dev-nginx-ingress
   namespace: biocomplexity
 spec:
   rules:
-    - host: exceads.pods.uvarc.io
+    - host: exceads-dev.pods.uvarc.io
       http:
         paths:
         - pathType: Prefix
           path: "/"
           backend:
             service:
-              name: exceads-service   
+              name: exceads-dev-service 
               port: 
                 number: 8080
