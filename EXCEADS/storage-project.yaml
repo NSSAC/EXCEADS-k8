@@ -12,3 +12,4 @@ spec:
       storage: 10Gi
   volumeMode: Filesystem
   volumeName: bii-exceads-project-nfs-pv
+  storageClassName: bii-exceads-project-nfs-sc

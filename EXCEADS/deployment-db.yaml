@@ -31,13 +31,9 @@ spec:
       containers:
       - name: exceads-dev-db
         image: mysql:8.0.20
-        # ports:
-        # - containerPort: 3306
-        #   hostPort: 3306
-        #   protocol: TCP
-        # - containerPort: 33060
-        #   hostPort: 33060
-        #   protocol: TCP
+        ports:
+        - containerPort: 3306
+          name: mysql-exceads
         env:
           - name: MYSQL_DATABASE
             value: exceads

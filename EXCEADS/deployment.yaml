@@ -36,7 +36,7 @@ spec:
             - name: EXCEADS_DB_PASSWORD_FILE
               value: /run/exceads-db-secrets/db_root_password
             - name: EXCEADS_DB_CONNECTION
-              value: localhost:3306/exceads
+              value: exceads-dev-db-service:3306/exceads
             - name: EXCEADS_TEMPLATES_GIT_URL
               value: https://github.com/NSSAC/EXCEADS-Templates.git
             - name: EXCEADS_GIT_TOKEN_FILE
