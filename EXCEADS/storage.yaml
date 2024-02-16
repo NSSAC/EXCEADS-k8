@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bii-exceads-mysql-dev-pvc
+  namespace: biocomplexity
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      # This doesn't really matter for a static PV
+      storage: 2Gi
+  volumeMode: Filesystem
+  volumeName: bii-exceads-mysql-dev-pv
+  storageClassName: csi-rbd-sc

@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exceads-dev-db-deployment
+  namespace: biocomplexity
+  labels:
+    app: exceads-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exceads-dev
+  template:
+    metadata:
+      labels:
+        app: exceads-dev
+    spec:
+      volumes:
+        - name: bii-exceads-mysql-dev-volume
+          persistentVolumeClaim:
+            claimName: bii-exceads-mysql-dev-pvc
+        - name: exceads-secrets
+          secret:
+            secretName: exceads-dev-secrets
+        - name: exceads-db-secrets
+          secret:
+            secretName: exceads-dev-db-secrets
+        
+      imagePullSecrets:
+        - name: exceads-registry-secret
+      containers:
+      - name: exceads-dev-db
+        image: mysql:8.0.20
+        # ports:
+        # - containerPort: 3306
+        #   hostPort: 3306
+        #   protocol: TCP
+        # - containerPort: 33060
+        #   hostPort: 33060
+        #   protocol: TCP
+        env:
+          - name: MYSQL_DATABASE
+            value: exceads
+          - name: MYSQL_PASSWORD_FILE
+            value: /run/exceads-db-secrets/db_exceads_password
+          - name: MYSQL_ROOT_PASSWORD_FILE
+            value: /run/exceads-db-secrets/db_root_password
+          - name: MYSQL_USER
+            value: exceads
+        resources:
+          requests:
+            memory: "1024Mi"
+            cpu: "0.2"
+          limits:
+            memory: "2048Mi"
+            cpu: "1"
+        volumeMounts:
+        - name: exceads-db-secrets
+          readOnly: true
+          mountPath: "/run/exceads-db-secrets"
+        - name: bii-exceads-mysql-dev-volume
+          mountPath: /var/lib/mysql
