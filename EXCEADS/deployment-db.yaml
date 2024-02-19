@@ -10,6 +10,9 @@ spec:
   selector:
     matchLabels:
       app: exceads-dev
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 2
   template:
     metadata:
       labels:
@@ -25,9 +28,6 @@ spec:
         - name: exceads-db-secrets
           secret:
             secretName: exceads-dev-db-secrets
-      strategy:
-        type: Recreate
-      revisionHistoryLimit: 2
       imagePullSecrets:
         - name: exceads-registry-secret
       containers:
