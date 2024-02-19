@@ -25,7 +25,9 @@ spec:
         - name: exceads-db-secrets
           secret:
             secretName: exceads-dev-db-secrets
-        
+      strategy:
+        type: Recreate
+      revisionHistoryLimit: 2
       imagePullSecrets:
         - name: exceads-registry-secret
       containers:
