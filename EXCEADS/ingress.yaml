@@ -16,6 +16,6 @@ spec:
           path: "/"
           backend:
             service:
-              name: exceads-dev-service 
+              name: exceads-dev-tomcat-service
               port: 
                 number: 8080

@@ -4,19 +4,25 @@ metadata:
   name: exceads-dev-db-deployment
   namespace: biocomplexity
   labels:
-    app: exceads-dev
+    app: exceads
+    environment: dev
+    component: db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: exceads-dev
+      app: exceads
+      environment: dev
+      component: db
   strategy:
     type: Recreate
   revisionHistoryLimit: 2
   template:
     metadata:
       labels:
-        app: exceads-dev
+        app: exceads
+        environment: dev
+        component: db
     spec:
       volumes:
         - name: bii-exceads-mysql-dev-volume

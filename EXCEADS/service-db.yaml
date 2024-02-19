@@ -5,7 +5,9 @@ metadata:
   namespace: biocomplexity
 spec:
   selector:
-    app: exceads-dev
+    app: exceads
+    environment: dev
+    component: db
   ports:
     - protocol: TCP
       port: 3306

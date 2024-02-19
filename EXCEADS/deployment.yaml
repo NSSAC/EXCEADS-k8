@@ -4,16 +4,22 @@ metadata:
   name: exceads-dev-deployment
   namespace: biocomplexity
   labels:
-    app: exceads-dev
+    app: exceads
+    environment: dev
+    component: tomcat
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: exceads-dev
+      app: exceads
+      environment: dev
+      component: tomcat
   template:
     metadata:
       labels:
-        app: exceads-dev
+        app: exceads
+        environment: dev
+        component: tomcat
     spec:
       volumes:
         - name: exceads-secrets
