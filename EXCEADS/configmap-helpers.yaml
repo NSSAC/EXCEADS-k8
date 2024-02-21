@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-helper-scripts
+  namespace: biocomplexity
+data:
+  mysqldump.sh: |
+    #!/bin/bash
+
+    TS=$(date -Iseconds)
+    PASSWD_CNF=.dump.cnf
+    BACKUP_NAME="/backup/dump_${TS}"
+
+    # Create temporary config
+    echo '=== Creating password config file'
+    echo "[mysqldump]" > ${PASSWD_CNF}
+    echo -n "password=" >> ${PASSWD_CNF}
+    cat ${MYSQL_ROOT_PASSWORD_FILE} >> ${PASSWD_CNF}
+    chmod 600 ${PASSWD_CNF}
+    
+    echo "=== Executing DB dump"
+    echo "=== host=${EXCEADS_DB_HOST}"
+    echo "=== prefix=${BACKUP_NAME}"
+    echo "=== $(mysqldump --version)"
+    echo "Start time: $(date -Iseconds)" | tee "${BACKUP_NAME}.log"
+    mysqldump \
+      --defaults-extra-file=${PASSWD_CNF} \
+      -P 3306 -h ${EXCEADS_DB_HOST} \
+      --all-databases --master-data --single-transaction \
+      2> >(tee -a "${BACKUP_NAME}.log" >&2) \
+      | gzip > "${BACKUP_NAME}.sql.gz"
+    echo "End time: $(date -Iseconds)" | tee -a "${BACKUP_NAME}.log"

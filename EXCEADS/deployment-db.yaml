@@ -34,8 +34,6 @@ spec:
         - name: exceads-db-secrets
           secret:
             secretName: exceads-dev-db-secrets
-      imagePullSecrets:
-        - name: exceads-registry-secret
       containers:
       - name: exceads-dev-db
         image: mysql:8.0.20

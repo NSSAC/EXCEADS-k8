@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: exceads-all-db-dump-cronjob
+  namespace: biocomplexity
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: bii-exceads-project-nfs-volume
+              persistentVolumeClaim:
+                claimName: bii-exceads-project-nfs-pvc
+            - name: exceads-db-secrets
+              secret:
+                secretName: exceads-dev-db-secrets
+            - name: scripts
+              configMap:
+                name: db-helper-scripts
+                defaultMode: 0500
+          containers:
+          - name: exceads-all-db-dump
+            image: mysql:8.0.20
+            command: [/scripts/mysqldump.sh]
+            env:
+              - name: MYSQL_DATABASE
+                value: exceads
+              - name: MYSQL_PASSWORD_FILE
+                value: /run/exceads-db-secrets/db_exceads_password
+              - name: MYSQL_ROOT_PASSWORD_FILE
+                value: /run/exceads-db-secrets/db_root_password
+              - name: MYSQL_USER
+                value: exceads
+              - name: EXCEADS_DB_HOST
+                value: exceads-dev-db-service
+            resources:
+              requests:
+                memory: "1024Mi"
+                cpu: "0.2"
+              limits:
+                memory: "2048Mi"
+                cpu: "1"
+            volumeMounts:
+            - name: exceads-db-secrets
+              readOnly: true
+              mountPath: "/run/exceads-db-secrets"
+            - name: bii-exceads-project-nfs-volume
+              mountPath: /backup
+              subPath: exceads-dev-mysql-backup
+            - name: scripts
+              mountPath: /scripts
+          restartPolicy: OnFailure         # Restarting
+      ttlSecondsAfterFinished: 1800        # Logs available for this length
