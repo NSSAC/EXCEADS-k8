@@ -2,13 +2,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: db-helper-scripts
-  namespace: biocomplexity
+  namespace: {{ .Release.Namespace }}
 data:
   mysqldump.sh: |
     #!/bin/bash
 
     TS=$(date -Iseconds)
-    PASSWD_CNF=.dump.cnf
+    PASSWD_CNF=/tmp/.dump.cnf
     BACKUP_NAME="/backup/dump_${TS}"
 
     # Create temporary config
@@ -25,8 +25,9 @@ data:
     echo "Start time: $(date -Iseconds)" | tee "${BACKUP_NAME}.log"
     mysqldump \
       --defaults-extra-file=${PASSWD_CNF} \
-      -P 3306 -h ${EXCEADS_DB_HOST} \
+      -P 3306 -h ${EXCEADS_DB_HOST} -u root \
       --all-databases --master-data --single-transaction \
       2> >(tee -a "${BACKUP_NAME}.log" >&2) \
       | gzip > "${BACKUP_NAME}.sql.gz"
     echo "End time: $(date -Iseconds)" | tee -a "${BACKUP_NAME}.log"
+    rm ${PASSWD_CNF}

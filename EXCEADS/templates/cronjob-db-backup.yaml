@@ -1,8 +1,8 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: exceads-all-db-dump-cronjob
-  namespace: biocomplexity
+  name: exceads-{{ .Values.environmentName }}-db-dump-cronjob
+  namespace: {{ .Release.Namespace }}
 spec:
   schedule: "0 * * * *"
   jobTemplate:
@@ -15,13 +15,16 @@ spec:
                 claimName: bii-exceads-project-nfs-pvc
             - name: exceads-db-secrets
               secret:
-                secretName: exceads-dev-db-secrets
+                secretName: exceads-{{ .Values.environmentName }}-db-secrets
             - name: scripts
               configMap:
                 name: db-helper-scripts
-                defaultMode: 0500
+                defaultMode: 0555
+          securityContext:
+            runAsUser: 272550
+            runAsGroup: 29613
           containers:
-          - name: exceads-all-db-dump
+          - name: exceads-{{ .Values.environmentName }}-db-dump
             image: mysql:8.0.20
             command: [/scripts/mysqldump.sh]
             env:
@@ -34,7 +37,7 @@ spec:
               - name: MYSQL_USER
                 value: exceads
               - name: EXCEADS_DB_HOST
-                value: exceads-dev-db-service
+                value: exceads-{{ .Values.environmentName }}-db-service
             resources:
               requests:
                 memory: "1024Mi"
@@ -48,7 +51,7 @@ spec:
               mountPath: "/run/exceads-db-secrets"
             - name: bii-exceads-project-nfs-volume
               mountPath: /backup
-              subPath: exceads-dev-mysql-backup
+              subPath: exceads-{{ .Values.environmentName }}-mysql-backup
             - name: scripts
               mountPath: /scripts
           restartPolicy: OnFailure         # Restarting

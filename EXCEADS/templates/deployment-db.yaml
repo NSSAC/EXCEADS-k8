@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exceads-dev-db-deployment
-  namespace: biocomplexity
+  name: exceads-{{ .Values.environmentName }}-db-deployment
+  namespace: {{ .Release.Namespace }}
   labels:
     app: exceads
-    environment: dev
+    environment: {{ .Values.environmentName }}
     component: db
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: exceads
-      environment: dev
+      environment: {{ .Values.environmentName }}
       component: db
   strategy:
     type: Recreate
@@ -21,21 +21,21 @@ spec:
     metadata:
       labels:
         app: exceads
-        environment: dev
+        environment: {{ .Values.environmentName }}
         component: db
     spec:
       volumes:
-        - name: bii-exceads-mysql-dev-volume
+        - name: bii-exceads-mysql-volume
           persistentVolumeClaim:
-            claimName: bii-exceads-mysql-dev-pvc
+            claimName: bii-exceads-mysql-{{ .Values.environmentName }}-pvc
         - name: exceads-secrets
           secret:
-            secretName: exceads-dev-secrets
+            secretName: exceads-{{ .Values.environmentName }}-secrets
         - name: exceads-db-secrets
           secret:
-            secretName: exceads-dev-db-secrets
+            secretName: exceads-{{ .Values.environmentName }}-db-secrets
       containers:
-      - name: exceads-dev-db
+      - name: exceads-{{ .Values.environmentName }}-db
         image: mysql:8.0.20
         ports:
         - containerPort: 3306
@@ -60,5 +60,5 @@ spec:
         - name: exceads-db-secrets
           readOnly: true
           mountPath: "/run/exceads-db-secrets"
-        - name: bii-exceads-mysql-dev-volume
+        - name: bii-exceads-mysql-volume
           mountPath: /var/lib/mysql

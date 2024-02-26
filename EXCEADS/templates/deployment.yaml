@@ -1,40 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exceads-dev-deployment
-  namespace: biocomplexity
+  name: exceads-{{ .Values.environmentName }}-deployment
+  namespace: {{ .Release.Namespace }}
   labels:
     app: exceads
-    environment: dev
+    environment: {{ .Values.environmentName }}
     component: tomcat
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: exceads
-      environment: dev
+      environment: {{ .Values.environmentName }}
       component: tomcat
   template:
     metadata:
       labels:
         app: exceads
-        environment: dev
+        environment: {{ .Values.environmentName }}
         component: tomcat
     spec:
       volumes:
         - name: exceads-secrets
           secret:
-            secretName: exceads-dev-secrets
+            secretName: exceads-{{ .Values.environmentName }}-secrets
         - name: exceads-db-secrets
           secret:
-            secretName: exceads-dev-db-secrets
+            secretName: exceads-{{ .Values.environmentName }}-db-secrets
         
       imagePullSecrets:
         - name: exceads-registry-secret
       containers:
-      - name: exceads-dev-frontend
-        image: ghcr.io/nssac/exceads-dev:latest
-        imagePullPolicy: Always
+      - name: exceads-{{ .Values.environmentName }}-frontend
+        image: {{ .Values.frontendImage }}:{{ .Values.frontendVersion }}
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
           name: http-exceads
@@ -42,19 +42,19 @@ spec:
             - name: EXCEADS_DB_PASSWORD_FILE
               value: /run/exceads-db-secrets/db_root_password
             - name: EXCEADS_DB_CONNECTION
-              value: exceads-dev-db-service:3306/exceads
+              value: exceads-{{ .Values.environmentName }}-db-service:3306/exceads
             - name: EXCEADS_TEMPLATES_GIT_URL
-              value: https://github.com/NSSAC/EXCEADS-Templates.git
+              value: {{ .Values.exceadsTemplates.url }}
             - name: EXCEADS_GIT_TOKEN_FILE
               value: /run/exceads-secrets/git_token
             - name: EXCEADS_INSTANCE_NAME
-              value: exceads_dev_k8
+              value: {{ .Values.sciductInstanceName }}
             - name: EXCEADS_SCIDUCT_TOKEN_FILE
               value: /run/exceads-secrets/sciduct_token
             - name: EXCEADS_SMTP_HOST
-              value: out.mail.virginia.edu
+              value: {{ .Values.smtp.host }}
             - name: EXCEADS_SMTP_TO
-              value: pjp2b@virginia.edu
+              value: {{ .Values.smtp.to }}
         resources:
           requests:
             memory: "2048Mi"

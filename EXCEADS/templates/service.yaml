@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: exceads-dev-tomcat-service
-  namespace: biocomplexity
+  name: exceads-{{ .Values.environmentName }}-tomcat-service
+  namespace: {{ .Release.Namespace }}
 spec:
   selector:
     app: exceads
-    environment: dev
+    environment: {{ .Values.environmentName }}
     component: tomcat
   ports:
     - protocol: TCP
