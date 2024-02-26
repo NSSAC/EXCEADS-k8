@@ -1,0 +1,3 @@
+smtp:
+  host: out.mail.virginia.edu
+  to: pjp2b@virginia.edu
