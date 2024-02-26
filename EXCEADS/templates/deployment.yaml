@@ -48,7 +48,7 @@ spec:
             - name: EXCEADS_GIT_TOKEN_FILE
               value: /run/exceads-secrets/git_token
             - name: EXCEADS_INSTANCE_NAME
-              value: {{ .Values.sciductInstanceName }}
+              value: {{ .Values.sciduct.instanceName }}
             - name: EXCEADS_SCIDUCT_TOKEN_FILE
               value: /run/exceads-secrets/sciduct_token
             - name: EXCEADS_SMTP_HOST
