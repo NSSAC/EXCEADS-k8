@@ -1,5 +1,5 @@
 environmentName: dev
-frontendVersion: 3.6.0
+frontendVersion: 3.6.2
 frontendImage: ghcr.io/nssac/exceads-dev
 sciduct:
   instanceName: exceads_dev_k8
