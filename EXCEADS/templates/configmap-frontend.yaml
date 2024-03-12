@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: exceads-{{ .Values.environmentName }}-frontend-cm
+  namespace: {{ .Release.Namespace }}
+data:
+  config.json: |
+      {
+        "sciDuctBaseURL": "{{ .Values.sciduct.baseUrl }}",
+        "applicationId": "{{ .Values.sciduct.instanceName }}",
+        "exceadsStatusMessageFile" : "{{ .Values.sciduct.exceadsStatusMessageFile }}",
+        "titleName" : "{{ .Values.title }}",
+        "buildVersion" : "v{{ .Values.frontendVersion }}"
+      }
