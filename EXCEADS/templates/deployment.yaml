@@ -28,7 +28,9 @@ spec:
         - name: exceads-db-secrets
           secret:
             secretName: exceads-{{ .Values.environmentName }}-db-secrets
-        
+        - name: frontend-config
+          configMap:
+            name:  exceads-{{ .Values.environmentName }}-frontend-cm
       imagePullSecrets:
         - name: exceads-registry-secret
       containers:
@@ -69,3 +71,5 @@ spec:
         - name: exceads-secrets
           readOnly: true
           mountPath: "/run/exceads-secrets"
+        - name: frontend-config
+          mountPath: /usr/local/tomcat/webapps/ROOT/assets/data/config.json
