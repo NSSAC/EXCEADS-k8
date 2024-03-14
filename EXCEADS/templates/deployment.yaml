@@ -72,4 +72,4 @@ spec:
           readOnly: true
           mountPath: "/run/exceads-secrets"
         - name: frontend-config
-          mountPath: /usr/local/tomcat/webapps/ROOT/assets/data/config.json
+          mountPath: /usr/local/tomcat/webapps/ROOT/assets/data
