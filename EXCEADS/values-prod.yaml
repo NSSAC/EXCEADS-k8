@@ -1,6 +1,6 @@
 environmentName: prod
 title: EXCEADS
-frontendVersion: 3.7.2
+frontendVersion: 3.7.3
 frontendImage: ghcr.io/nssac/exceads
 sciduct:
   instanceName: exceads_dev_k8
