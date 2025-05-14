@@ -57,6 +57,12 @@ spec:
               value: {{ .Values.smtp.host }}
             - name: EXCEADS_SMTP_TO
               value: {{ .Values.smtp.to }}
+            - name: EXCEADS_JOB_EPIHIPER
+              value: {{ .Values.job.epihiper }}
+            - name: EXCEADS_JOB_PATCHSIM
+              value: {{ .Values.job.patchsim }}
+            - name: EXCEADS_JOB_MULTICELL
+              value: {{ .Values.job.multicell }}
         resources:
           requests:
             memory: "2048Mi"
