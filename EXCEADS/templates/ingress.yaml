@@ -7,8 +7,11 @@ metadata:
     nginx.org/websocket-services: "exceads-{{ .Values.environmentName }}-tomcat-service"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "900"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "900"
+    # Disable buffering, it was causing issues with chunked responses
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
     nginx.ingress.kubernetes.io/proxy-buffering: 'off'
+    # Limit access to local UVARC internal IPs and UVA network
+    nginx.ingress.kubernetes.io/whitelist-source-range: "172.28.1.1/15,10.0.0.0/8"
   name: exceads-{{ .Values.environmentName }}-nginx-ingress
   namespace: {{ .Release.Namespace }}
 spec:
