@@ -12,6 +12,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-buffering: 'off'
     # Limit access to local UVARC internal IPs and UVA network
     nginx.ingress.kubernetes.io/whitelist-source-range: "172.28.1.1/15,10.0.0.0/8"
+    nginx.ingress.kubernetes.io/real-ip-header: "X-Forwarded-For"
   name: exceads-{{ .Values.environmentName }}-nginx-ingress
   namespace: {{ .Release.Namespace }}
 spec:
