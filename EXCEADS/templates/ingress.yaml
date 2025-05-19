@@ -10,6 +10,7 @@ metadata:
     # Disable buffering, it was causing issues with chunked responses
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
     nginx.ingress.kubernetes.io/proxy-buffering: 'off'
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.0"
     # Limit access to local UVARC internal IPs and UVA network
     nginx.ingress.kubernetes.io/whitelist-source-range: "172.28.1.1/15,10.0.0.0/8"
     nginx.ingress.kubernetes.io/real-ip-header: "X-Forwarded-For"
