@@ -26,7 +26,7 @@ metadata:
 spec:
   rules:
     - host: exceads-{{ .Values.environmentName }}.pods.uvarc.io
-      http:
+      http: &http_rules
         paths:
         - pathType: Prefix
           path: "/"
@@ -35,3 +35,5 @@ spec:
               name: exceads-{{ .Values.environmentName }}-tomcat-service
               port: 
                 number: 8080
+    - host: exceads-{{ .Values.environmentName }}.bii.virginia.edu
+      http: *http_rules
