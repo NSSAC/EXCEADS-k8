@@ -18,9 +18,9 @@ metadata:
     #   real_ip_header X-Forwarded-For;
     #   proxy_http_version 1.0;
     #   proxy_set_header Connection "";
-    nginx.org/server-snippets: |
-      allow 128.143.0.0/16;
-      deny all;
+    #nginx.org/server-snippets: |
+    #  allow 128.143.0.0/16;
+    #  deny all;
   name: exceads-{{ .Values.environmentName }}-nginx-ingress
   namespace: {{ .Release.Namespace }}
 spec:
